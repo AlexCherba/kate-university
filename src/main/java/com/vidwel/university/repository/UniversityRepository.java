@@ -14,4 +14,8 @@ public interface UniversityRepository extends CrudRepository<University, UUID> {
     University getByName(UUID id);
 
     University getByAddress(UUID id);
+
+    University getByEmail(UUID id);
+
+
 }

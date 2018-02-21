@@ -1,20 +1,25 @@
 package com.vidwel.university.controller;
 
 import com.vidwel.university.dto.request.reqUniversityDTO;
+import com.vidwel.university.entity.University;
+import com.vidwel.university.repository.UniversityRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 @RestController
 public class WebController {
-    private Set<reqUniversityDTO> universities;
+    private UniversityRepository repository;
 
-    {
-        //Test JSON
-        universities = new HashSet<>();
+    public WebController(UniversityRepository repository) {
+        this.repository = repository;
+    }
+
+    private Set<reqUniversityDTO> getTestDTO() {
+        //Create Test JSON of Universities
+        Set<reqUniversityDTO> universities = new HashSet<>();
         reqUniversityDTO university;
         for (int i = 0; i < 5; i++) {
             university = new reqUniversityDTO();
@@ -25,6 +30,17 @@ public class WebController {
             university.setEmail("blblbla@de." + i);
             universities.add(university);
         }
+        return universities;
+    }
+
+    private University getTestUniversity() {
+        University university = new University();
+        university.setName("Univerdef");
+        university.setDescription("Desc");
+        university.setAddress("Berlin");
+        university.setPhone("3333333");
+        university.setEmail("blblbla@de.de");
+        return university;
     }
 
     @RequestMapping(path = "/getuniversity", method = RequestMethod.POST)
@@ -43,57 +59,17 @@ public class WebController {
         System.out.println(requestParam);
     }
 
-    /*
-    Response JSON Array from Set<University>:
-    [
-        {
-            "name": "Univer4",
-            "description": "Desc4",
-            "phone": "33333334",
-            "email": "blblbla@de.4",
-            "address": "Berlin4"
-        },
-        {
-            "name": "Univer1",
-            "description": "Desc1",
-            "phone": "33333331",
-            "email": "blblbla@de.1",
-            "address": "Berlin1"
-        },
-        {
-            "name": "Univer2",
-            "description": "Desc2",
-            "phone": "33333332",
-            "email": "blblbla@de.2",
-            "address": "Berlin2"
-        },
-        {
-            "name": "Univer0",
-            "description": "Desc0",
-            "phone": "33333330",
-            "email": "blblbla@de.0",
-            "address": "Berlin0"
-        },
-        {
-            "name": null,
-            "description": null,
-            "phone": null,
-            "email": null,
-            "address": null
-        },
-        {
-            "name": "Univer3",
-            "description": "Desc3",
-            "phone": "33333333",
-            "email": "blblbla@de.3",
-            "address": "Berlin3"
-        }
-    ]
-    */
+    @GetMapping(path = "/add")
+    public void addUniversity() {
+        System.out.println("ADD");
+
+        repository.save(getTestUniversity());
+    }
+
     @RequestMapping(path = "/viewall", method = RequestMethod.POST)
-    //@ResponseBody
+    @ResponseBody
     public Set getAllUniversity() {
-        return universities;
+        return getTestDTO();
     }
 }
 
