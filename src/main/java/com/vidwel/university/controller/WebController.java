@@ -4,14 +4,16 @@ import com.vidwel.university.dto.request.reqUniversityDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-//@Getter
 @RestController
 public class WebController {
     private Set<reqUniversityDTO> universities;
 
     {
+        //Test JSON
         universities = new HashSet<>();
         reqUniversityDTO university;
         for (int i = 0; i < 5; i++) {
@@ -27,10 +29,18 @@ public class WebController {
 
     @RequestMapping(path = "/getuniversity", method = RequestMethod.POST)
     public void getUniversities(@RequestBody HashSet<reqUniversityDTO> universities) {
-        System.out.println("I get json!");
+        for (reqUniversityDTO university : universities)
+            System.out.println(university);
+    }
 
-        for (reqUniversityDTO university:universities)
-        System.out.println(university);
+    @GetMapping(path = "/form1")
+    public void getForm(@RequestParam Map<String, String> allRequestParams) {
+        System.out.println(allRequestParams);
+    }
+
+    @PostMapping(path = "/form")
+    public void getForm(@RequestParam(name = "name1", defaultValue = "DONE") String requestParam) {
+        System.out.println(requestParam);
     }
 
     /*
@@ -81,7 +91,7 @@ public class WebController {
     ]
     */
     @RequestMapping(path = "/viewall", method = RequestMethod.POST)
-    @ResponseBody
+    //@ResponseBody
     public Set getAllUniversity() {
         return universities;
     }
